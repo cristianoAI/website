@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AImpresa — Intelligenza Artificiale per le PMI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #111118;
+      --bg3: #16161f;
+      --border: rgba(255,255,255,0.07);
+      --accent: #7c5cfc;
+      --accent2: #a78bfa;
+      --accent-glow: rgba(124,92,252,0.25);
+      --text: #f0f0f5;
+      --muted: #8888a0;
+      --card: #13131a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff 40%, var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-logo span { color: var(--accent2); -webkit-text-fill-color: var(--accent2); }
+    .nav-cta {
+      background: var(--accent); color: #fff; border: none;
+      padding: 0.55rem 1.4rem; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer;
+      transition: opacity .2s, transform .2s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { opacity: .85; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 1.5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(124,92,252,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(124,92,252,0.12); border: 1px solid rgba(124,92,252,0.3);
+      color: var(--accent2); font-size: .8rem; font-weight: 600;
+      padding: .35rem 1rem; border-radius: 999px; margin-bottom: 1.8rem;
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--accent2); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; margin-bottom: 1.5rem;
+      max-width: 820px;
+    }
+    h1 .accent {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted); max-width: 600px;
+      margin-bottom: 2.5rem; font-weight: 400;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: .8rem 2rem; border-radius: 10px;
+      font-size: 1rem; font-weight: 600; text-decoration: none;
+      transition: all .2s; border: none; cursor: pointer;
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--accent-glow); }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      padding: .8rem 2rem; border-radius: 10px;
+      font-size: 1rem; font-weight: 500; text-decoration: none;
+      border: 1px solid var(--border); transition: all .2s; cursor: pointer;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+    /* ── SEZIONE GENERICA ── */
+    section { padding: 5rem 1.5rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: .75rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent2);
+      margin-bottom: .8rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: .8rem; line-height: 1.2;
+    }
+    .section-sub {
+      color: var(--muted); font-size: 1rem; max-width: 560px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── COME FUNZIONA ── */
+    #come-funziona { background: var(--bg2); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.5rem; }
+    .step {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.8rem 1.5rem;
+      position: relative; transition: border-color .3s;
+    }
+    .step:hover { border-color: rgba(124,92,252,0.35); }
+    .step-num {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .95rem; margin-bottom: 1.1rem;
+    }
+    .step h3 { font-size: 1rem; font-weight: 600; margin-bottom: .5rem; }
+    .step p { font-size: .875rem; color: var(--muted); line-height: 1.55; }
+
+    /* ── SOLUZIONI CARD ── */
+    #soluzioni {}
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+      gap: 1.25rem;
+    }
+    .sol-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.8rem;
+      transition: all .3s; cursor: default;
+      position: relative; overflow: hidden;
+    }
+    .sol-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0; transition: opacity .3s;
+    }
+    .sol-card:hover { border-color: rgba(124,92,252,0.3); transform: translateY(-3px); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .sol-card:hover::before { opacity: 1; }
+    .sol-icon {
+      font-size: 2rem; margin-bottom: 1rem;
+      width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+      background: rgba(124,92,252,0.1); border-radius: 12px;
+    }
+    .sol-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: .6rem; }
+    .sol-card p { font-size: .875rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.1rem; }
+    .sol-tag {
+      display: inline-flex; align-items: center; gap: .3rem;
+      font-size: .72rem; font-weight: 600; color: var(--accent2);
+      background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.2);
+      padding: .25rem .7rem; border-radius: 999px;
+    }
+    .sol-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+    /* ── SETTORI ── */
+    #settori { background: var(--bg2); }
+    .settori-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 1rem; }
+    .settore-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.4rem 1.2rem;
+      text-align: center; transition: all .25s;
+    }
+    .settore-card:hover { border-color: rgba(124,92,252,0.3); background: rgba(124,92,252,0.05); }
+    .settore-icon { font-size: 2rem; margin-bottom: .7rem; display: block; }
+    .settore-card h4 { font-size: .9rem; font-weight: 600; margin-bottom: .3rem; }
+    .settore-card p { font-size: .77rem; color: var(--muted); }
+
+    /* ── PROCESSO ── */
+    #processo {}
+    .processo-list { display: flex; flex-direction: column; gap: 0; max-width: 700px; }
+    .processo-item {
+      display: flex; gap: 1.5rem; padding: 1.8rem 0;
+      border-bottom: 1px solid var(--border); align-items: flex-start;
+    }
+    .processo-item:last-child { border-bottom: none; }
+    .processo-dot {
+      flex-shrink: 0; width: 44px; height: 44px;
+      border: 2px solid var(--accent); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .9rem; color: var(--accent2);
+      background: rgba(124,92,252,0.08);
+    }
+    .processo-item h3 { font-size: 1rem; font-weight: 600; margin-bottom: .4rem; }
+    .processo-item p { font-size: .875rem; color: var(--muted); }
+
+    /* ── CTA FINALE ── */
+    #contatti {
+      background: var(--bg2);
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(124,92,252,0.12), rgba(167,139,250,0.06));
+      border: 1px solid rgba(124,92,252,0.25);
+      border-radius: 24px; padding: 4rem 2rem;
+      max-width: 700px; margin: 0 auto;
+    }
+    .cta-box h2 { font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; }
+    .cta-box p { color: var(--muted); margin-bottom: 2rem; font-size: 1rem; }
+    .cta-form { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; }
+    .cta-input {
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: var(--text); padding: .75rem 1.2rem; border-radius: 10px;
+      font-size: .95rem; width: 260px; outline: none;
+      font-family: 'Inter', sans-serif;
+      transition: border-color .2s;
+    }
+    .cta-input:focus { border-color: var(--accent); }
+    .cta-input::placeholder { color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 1.5rem; text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--muted); font-size: .8rem;
+    }
+
+    /* ── DIVIDER STAT ── */
+    .stats-row {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      justify-content: center; margin-top: 4rem;
+      padding-top: 3rem; border-top: 1px solid var(--border);
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent2); display: block; }
+    .stat-label { font-size: .8rem; color: var(--muted); }
+
+    @media (max-width: 640px) {
+      nav { padding: .9rem 1.2rem; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .cta-form { flex-direction: column; align-items: center; }
+      .cta-input { width: 100%; max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AI<span>mpresa</span></div>
+  <a href="#contatti" class="nav-cta">Parliamo →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">Intelligenza Artificiale per le PMI italiane</div>
+  <h1>La tua azienda,<br><span class="accent">potenziata dall'AI.</span></h1>
+  <p class="hero-sub">
+    Aiutiamo ristoranti, studi professionali e piccole imprese ad automatizzare i processi ripetitivi — così tu puoi concentrarti su quello che conta davvero.
+  </p>
+  <div class="hero-btns">
+    <a href="#soluzioni" class="btn-primary">Scopri cosa possiamo fare</a>
+    <a href="#processo" class="btn-secondary">Come funziona →</a>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-num">80%</span><span class="stat-label">delle attività ripetitive<br>automatizzabili oggi</span></div>
+    <div class="stat"><span class="stat-num">2–4h</span><span class="stat-label">risparmiate ogni giorno<br>per azienda</span></div>
+    <div class="stat"><span class="stat-num">0€</span><span class="stat-label">di capitale iniziale<br>per iniziare</span></div>
+  </div>
+</section>
+
+<!-- COME FUNZIONA -->
+<section id="come-funziona">
+  <div class="container">
+    <div class="section-label">Il metodo</div>
+    <h2 class="section-title">Semplice. Concreto. Su misura.</h2>
+    <p class="section-sub">Niente soluzioni preconfezionate. Ogni sistema viene costruito attorno ai tuoi processi reali.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Ascolto</h3>
+        <p>Prima call gratuita: capiamo come lavori, dove perdi tempo, cosa ti causa più attrito ogni giorno.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Diagnosi</h3>
+        <p>Identifichiamo i 2-3 processi con il massimo impatto se automatizzati. Niente tecnicismi — solo risultati concreti.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Costruzione</h3>
+        <p>Realizziamo la soluzione su misura. In giorni, non mesi. E tu la testi prima di pagare qualsiasi cosa.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Affiancamento</h3>
+        <p>Non sparisco dopo la consegna. Seguo il sistema nel tempo, lo miglioro con te, mi adatto alle tue esigenze.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUZIONI -->
+<section id="soluzioni">
+  <div class="container">
+    <div class="section-label">Le soluzioni</div>
+    <h2 class="section-title">Cosa possiamo costruire per te</h2>
+    <p class="section-sub">Esempi reali di automazioni già realizzabili oggi. Ogni soluzione è personalizzata al tuo contesto.</p>
+    <div class="solutions-grid">
+
+      <div class="sol-card">
+        <div class="sol-icon">💬</div>
+        <h3>Assistente Clienti su WhatsApp</h3>
+        <p>Un bot intelligente che risponde ai tuoi clienti 24/7, gestisce domande frequenti, raccoglie prenotazioni e smista le richieste urgenti a te — solo quando serve davvero.</p>
+        <div class="sol-tags">
+          <span class="sol-tag">⏱ Attivo H24</span>
+          <span class="sol-tag">📱 WhatsApp</span>
+          <span class="sol-tag">🍽 Ristoranti</span>
+        </div>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-icon">📅</div>
+        <h3>Gestione Appuntamenti Automatica</h3>
+        <p>Prenotazioni, conferme, promemoria e disdette gestiti in autonomia. Il cliente prenota via WhatsApp o dal sito, il sistema aggiorna il calendario e ti avvisa solo se necessario.</p>
+        <div class="sol-tags">
+          <span class="sol-tag">🔁 Zero attrito</span>
+          <span class="sol-tag">📆 Calendario sync</span>
+          <span class="sol-tag">💆 Studi medici</span>
+        </div>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-icon">📧</div>
+        <h3>Follow-up Clienti Intelligente</h3>
+        <p>Dopo ogni preventivo, visita o acquisto, il sistema invia automaticamente il messaggio giusto al momento giusto. Nessun lead dimenticato, nessuna opportunità persa.</p>
+        <div class="sol-tags">
+          <span class="sol-tag">💰 +Conversioni</span>
+          <span class="sol-tag">📊 CRM integrato</span>
+          <span class="sol-tag">🏠 Immobiliare</span>
+        </div>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-icon">⭐</div>
+        <h3>Gestione Recensioni Google</h3>
+        <p>L'AI monitora le nuove recensioni e genera risposte personalizzate, professionali e coerenti col tuo tono. Tu approvi con un click. La tua reputazione online curata ogni giorno.</p>
+        <div class="sol-tags">
+          <span class="sol-tag">🌐 Google Business</span>
+          <span class="sol-tag">✍️ Tono su misura</span>
+          <span class="sol-tag">🛒 E-commerce</span>
+        </div>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-icon">📋</div>
+        <h3>Report e Dashboard Automatici</h3>
+        <p>Ogni settimana o mese ricevi un report chiaro su vendite, clienti, appuntamenti — aggregato da tutti i tuoi strumenti. Dati utili, non fogli Excel da compilare a mano.</p>
+        <div class="sol-tags">
+          <span class="sol-tag">📈 KPI chiari</span>
+          <span class="sol-tag">🔗 Multi-fonte</span>
+          <span class="sol-tag">🏢 PMI generiche</span>
+        </div>
+      </div>
+
+      <div class="sol-card">
+        <div class="sol-icon">🤖</div>
+        <h3>Assistente Interno AI</h3>
+        <p>Un assistente su misura addestrato sui tuoi documenti, listini, procedure. I tuoi dipendenti o tu stesso trovate in secondi qualsiasi informazione interna — senza cercare tra mille file.</p>
+        <div class="sol-tags">
+          <span class="sol-tag">🧠 Knowledge base</span>
+          <span class="sol-tag">⚡ Istantaneo</span>
+          <span class="sol-tag">📁 Documenti propri</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SETTORI -->
+<section id="settori">
+  <div class="container">
+    <div class="section-label">Chi serviamo</div>
+    <h2 class="section-title">I settori in cui operiamo</h2>
+    <p class="section-sub">Lavoriamo con realtà locali di ogni dimensione. Più sei piccolo, più l'impatto è immediato.</p>
+    <div class="settori-grid">
+      <div class="settore-card"><span class="settore-icon">🍽️</span><h4>Ristoranti & Bar</h4><p>Prenotazioni, clienti, promozioni</p></div>
+      <div class="settore-card"><span class="settore-icon">⚖️</span><h4>Studi Legali</h4><p>Clienti, documenti, scadenze</p></div>
+      <div class="settore-card"><span class="settore-icon">🏠</span><h4>Agenzie Immobiliari</h4><p>Lead, visite, follow-up</p></div>
+      <div class="settore-card"><span class="settore-icon">💆</span><h4>Studi Medici</h4><p>Appuntamenti, promemoria, pazienti</p></div>
+      <div class="settore-card"><span class="settore-icon">🔧</span><h4>Artigiani & Tecnici</h4><p>Preventivi, clienti, interventi</p></div>
+      <div class="settore-card"><span class="settore-icon">🛍️</span><h4>Negozi & Retail</h4><p>Ordini, stock, comunicazioni</p></div>
+      <div class="settore-card"><span class="settore-icon">📐</span><h4>Studi di Progettazione</h4><p>Workflow, clienti, documentazione</p></div>
+      <div class="settore-card"><span class="settore-icon">🏋️</span><h4>Palestre & Wellness</h4><p>Iscrizioni, lezioni, reminder</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- IL PROCESSO -->
+<section id="processo">
+  <div class="container" style="display:grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
+    <div>
+      <div class="section-label">Il percorso</div>
+      <h2 class="section-title">Da zero a sistema funzionante in settimane</h2>
+      <p class="section-sub">Nessun contratto lungo. Nessun rischio. Prima vedi i risultati, poi decidi.</p>
+    </div>
+    <div class="processo-list">
+      <div class="processo-item">
+        <div class="processo-dot">01</div>
+        <div>
+          <h3>Call conoscitiva gratuita (30 min)</h3>
+          <p>Parliamo del tuo business. Capiamo dove l'AI può avere il massimo impatto. Zero impegno da parte tua.</p>
+        </div>
+      </div>
+      <div class="processo-item">
+        <div class="processo-dot">02</div>
+        <div>
+          <h3>Proposta su misura</h3>
+          <p>Ti mando un documento chiaro: cosa costruiamo, in quanto tempo, quanto costa, che risultato puoi aspettarti.</p>
+        </div>
+      </div>
+      <div class="processo-item">
+        <div class="processo-dot">03</div>
+        <div>
+          <h3>Prototipo in 7-14 giorni</h3>
+          <p>Costruisco una versione funzionante del sistema. La testi tu, nella tua azienda, prima di qualsiasi pagamento finale.</p>
+        </div>
+      </div>
+      <div class="processo-item">
+        <div class="processo-dot">04</div>
+        <div>
+          <h3>Consegna e affiancamento</h3>
+          <p>Il sistema va online. Ti insegno a usarlo. Resto disponibile per ottimizzazioni e nuove esigenze nel tempo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODOTTI ESEMPIO -->
+<section id="prodotti">
+  <div class="container">
+    <div class="section-label">Prodotti esempio</div>
+    <h2 class="section-title">Ecco come potrebbero apparire<br>le tue soluzioni</h2>
+    <p class="section-sub">Interfacce ipotetiche per darti un'idea visiva concreta. Ogni prodotto viene costruito su misura per la tua attività.</p>
+
+    <div class="prodotti-grid">
+
+      <!-- CARD 1: WhatsApp Bot -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-header-dot red"></div>
+          <div class="prod-header-dot yellow"></div>
+          <div class="prod-header-dot green"></div>
+          <span class="prod-header-title">💬 Assistente WhatsApp — La Trattoria da Marco</span>
+        </div>
+        <div class="prod-body chat-ui">
+          <div class="chat-topbar">
+            <div class="chat-avatar">M</div>
+            <div>
+              <div class="chat-name">Assistente AI — Da Marco</div>
+              <div class="chat-status">● Online ora</div>
+            </div>
+          </div>
+          <div class="chat-messages">
+            <div class="msg msg-in">
+              <div class="msg-bubble">Ciao! Avete tavoli disponibili sabato sera per 4 persone?</div>
+              <div class="msg-time">20:14</div>
+            </div>
+            <div class="msg msg-out">
+              <div class="msg-bubble">Ciao! 😊 Sì, abbiamo disponibilità sabato sera. Preferite <strong>19:30</strong> oppure <strong>21:00</strong>?</div>
+              <div class="msg-time">20:14 ✓✓</div>
+            </div>
+            <div class="msg msg-in">
+              <div class="msg-bubble">21:00 perfetto. Siamo celiaci, è un problema?</div>
+              <div class="msg-time">20:15</div>
+            </div>
+            <div class="msg msg-out">
+              <div class="msg-bubble">Nessun problema! Abbiamo un menu <strong>100% gluten free</strong> disponibile. Ho prenotato il tavolo per 4 sabato alle 21:00. Riceverete un promemoria venerdì sera! 🍽️</div>
+              <div class="msg-time">20:15 ✓✓</div>
+            </div>
+            <div class="msg msg-in">
+              <div class="msg-bubble">Ottimo grazie mille!</div>
+              <div class="msg-time">20:16</div>
+            </div>
+          </div>
+          <div class="chat-input-bar">
+            <div class="chat-fake-input">Scrivi un messaggio...</div>
+            <div class="chat-send">➤</div>
+          </div>
+        </div>
+        <div class="prod-footer">
+          <span class="prod-tag">🍽 Ristoranti</span>
+          <span class="prod-tag">💬 WhatsApp</span>
+          <span class="prod-tag">📅 Prenotazioni</span>
+        </div>
+      </div>
+
+      <!-- CARD 2: Dashboard Prenotazioni -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-header-dot red"></div>
+          <div class="prod-header-dot yellow"></div>
+          <div class="prod-header-dot green"></div>
+          <span class="prod-header-title">📅 Gestione Appuntamenti — Studio Medico Bianchi</span>
+        </div>
+        <div class="prod-body dashboard-ui">
+          <div class="dash-topbar">
+            <span class="dash-title">📋 Agenda Oggi — Giovedì 27 Marzo</span>
+            <span class="dash-new">+ Nuovo</span>
+          </div>
+          <div class="dash-stats">
+            <div class="dash-stat-box">
+              <div class="dash-stat-num" style="color:#7c5cfc">8</div>
+              <div class="dash-stat-label">Appuntamenti</div>
+            </div>
+            <div class="dash-stat-box">
+              <div class="dash-stat-num" style="color:#22c55e">6</div>
+              <div class="dash-stat-label">Confermati</div>
+            </div>
+            <div class="dash-stat-box">
+              <div class="dash-stat-num" style="color:#f59e0b">1</div>
+              <div class="dash-stat-label">In attesa</div>
+            </div>
+            <div class="dash-stat-box">
+              <div class="dash-stat-num" style="color:#ef4444">1</div>
+              <div class="dash-stat-label">Disdette</div>
+            </div>
+          </div>
+          <div class="dash-list">
+            <div class="dash-row confirmed">
+              <div class="dash-time">09:00</div>
+              <div class="dash-info"><strong>Mario Rossi</strong><span>Visita di controllo</span></div>
+              <div class="dash-badge green-badge">✓ Confermato</div>
+            </div>
+            <div class="dash-row confirmed">
+              <div class="dash-time">10:30</div>
+              <div class="dash-info"><strong>Anna Verdi</strong><span>Prima visita</span></div>
+              <div class="dash-badge green-badge">✓ Confermato</div>
+            </div>
+            <div class="dash-row pending">
+              <div class="dash-time">12:00</div>
+              <div class="dash-info"><strong>Luca Ferrari</strong><span>Follow-up</span></div>
+              <div class="dash-badge yellow-badge">⏳ Promemoria inviato</div>
+            </div>
+            <div class="dash-row cancelled">
+              <div class="dash-time">14:30</div>
+              <div class="dash-info"><strong>Sofia Esposito</strong><span>Visita specialistica</span></div>
+              <div class="dash-badge red-badge">✕ Disdetta — Slot libero</div>
+            </div>
+            <div class="dash-row confirmed">
+              <div class="dash-time">16:00</div>
+              <div class="dash-info"><strong>Carlo Mancini</strong><span>Visita di controllo</span></div>
+              <div class="dash-badge green-badge">✓ Confermato</div>
+            </div>
+          </div>
+        </div>
+        <div class="prod-footer">
+          <span class="prod-tag">💆 Studi Medici</span>
+          <span class="prod-tag">📆 Agenda automatica</span>
+          <span class="prod-tag">🔔 Promemoria AI</span>
+        </div>
+      </div>
+
+      <!-- CARD 3: Review Manager -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-header-dot red"></div>
+          <div class="prod-header-dot yellow"></div>
+          <div class="prod-header-dot green"></div>
+          <span class="prod-header-title">⭐ Gestione Recensioni — Agenzia Immobiliare Conti</span>
+        </div>
+        <div class="prod-body review-ui">
+          <div class="review-score-row">
+            <div class="review-big-score">4.8</div>
+            <div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-count">142 recensioni Google</div>
+              <div class="review-trend">↑ +0.2 rispetto al mese scorso</div>
+            </div>
+          </div>
+          <div class="review-list">
+            <div class="review-item">
+              <div class="review-item-top">
+                <span class="review-user">Giuseppe M.</span>
+                <span class="review-stars-sm">★★★★★</span>
+                <span class="review-date">2 giorni fa</span>
+              </div>
+              <p class="review-text">"Professionalità eccezionale. Hanno trovato casa mia in meno di 3 settimane!"</p>
+              <div class="review-response">
+                <div class="review-response-label">✍️ Risposta AI suggerita:</div>
+                <div class="review-response-text">"Grazie mille Giuseppe! È stato un piacere accompagnarla in questo percorso..."</div>
+                <div class="review-actions">
+                  <button class="review-btn approve">✓ Pubblica</button>
+                  <button class="review-btn edit">✎ Modifica</button>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <div class="review-item-top">
+                <span class="review-user">Francesca B.</span>
+                <span class="review-stars-sm" style="color:#f59e0b">★★★☆☆</span>
+                <span class="review-date">5 giorni fa</span>
+              </div>
+              <p class="review-text">"Bravi, ma i tempi di risposta potevano essere più rapidi."</p>
+              <div class="review-response">
+                <div class="review-response-label">⚠️ Risposta AI — Gestione critica:</div>
+                <div class="review-response-text">"Gentile Francesca, grazie per il suo feedback sincero. Prendiamo nota e stiamo già lavorando per migliorare..."</div>
+                <div class="review-actions">
+                  <button class="review-btn approve">✓ Pubblica</button>
+                  <button class="review-btn edit">✎ Modifica</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="prod-footer">
+          <span class="prod-tag">⭐ Google Reviews</span>
+          <span class="prod-tag">🏠 Immobiliare</span>
+          <span class="prod-tag">🤖 Risposta AI</span>
+        </div>
+      </div>
+
+      <!-- CARD 4: Lead Follow-up -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-header-dot red"></div>
+          <div class="prod-header-dot yellow"></div>
+          <div class="prod-header-dot green"></div>
+          <span class="prod-header-title">📊 Dashboard Lead — Idraulica Ferretti Srl</span>
+        </div>
+        <div class="prod-body leads-ui">
+          <div class="leads-header-row">
+            <span class="leads-title">Pipeline Clienti</span>
+            <span class="leads-month">Marzo 2026</span>
+          </div>
+          <div class="pipeline-cols">
+            <div class="pipeline-col">
+              <div class="pipeline-col-title new-col">🆕 Nuovi <span>4</span></div>
+              <div class="pipeline-card">
+                <div class="pc-name">Martina C.</div>
+                <div class="pc-detail">Sostituzione caldaia</div>
+                <div class="pc-source">📱 WhatsApp</div>
+              </div>
+              <div class="pipeline-card">
+                <div class="pc-name">Roberto A.</div>
+                <div class="pc-detail">Impianto nuovo</div>
+                <div class="pc-source">🌐 Sito web</div>
+              </div>
+            </div>
+            <div class="pipeline-col">
+              <div class="pipeline-col-title contact-col">📞 Contattati <span>5</span></div>
+              <div class="pipeline-card">
+                <div class="pc-name">Elena M.</div>
+                <div class="pc-detail">Preventivo inviato</div>
+                <div class="pc-tag sent">✓ Follow-up auto</div>
+              </div>
+              <div class="pipeline-card">
+                <div class="pc-name">Davide F.</div>
+                <div class="pc-detail">In attesa risposta</div>
+                <div class="pc-tag waiting">⏳ Reminder dom.</div>
+              </div>
+            </div>
+            <div class="pipeline-col">
+              <div class="pipeline-col-title won-col">✅ Chiusi <span>3</span></div>
+              <div class="pipeline-card won-card">
+                <div class="pc-name">Lucia B.</div>
+                <div class="pc-detail">Caldaia — 1.200€</div>
+                <div class="pc-tag won-tag">✓ Pagato</div>
+              </div>
+              <div class="pipeline-card won-card">
+                <div class="pc-name">Marco T.</div>
+                <div class="pc-detail">Impianto — 3.400€</div>
+                <div class="pc-tag won-tag">✓ Pagato</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="prod-footer">
+          <span class="prod-tag">🔧 Artigiani</span>
+          <span class="prod-tag">💰 CRM AI</span>
+          <span class="prod-tag">🔁 Follow-up auto</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ── PRODOTTI GRID ── */
+  #prodotti { background: var(--bg2); }
+  .prodotti-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+    gap: 2rem;
+  }
+  .prod-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: all .3s;
+  }
+  .prod-card:hover { border-color: rgba(124,92,252,0.35); transform: translateY(-4px); box-shadow: 0 16px 50px rgba(0,0,0,0.4); }
+  .prod-header {
+    display: flex; align-items: center; gap: .5rem;
+    background: rgba(255,255,255,0.03); padding: .7rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .prod-header-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .red { background: #ef4444; } .yellow { background: #f59e0b; } .green { background: #22c55e; }
+  .prod-header-title { font-size: .75rem; color: var(--muted); margin-left: .4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .prod-body { padding: 1.2rem; min-height: 260px; }
+  .prod-footer { display: flex; flex-wrap: wrap; gap: .4rem; padding: .9rem 1.2rem; border-top: 1px solid var(--border); }
+  .prod-tag {
+    font-size: .72rem; font-weight: 600; color: var(--accent2);
+    background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.2);
+    padding: .22rem .65rem; border-radius: 999px;
+  }
+
+  /* ── CHAT UI ── */
+  .chat-ui { display: flex; flex-direction: column; gap: 0; padding: 0; }
+  .chat-topbar {
+    display: flex; align-items: center; gap: .75rem;
+    background: #075e54; padding: .7rem 1rem;
+  }
+  .chat-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: #25d366; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .9rem; color: #fff; flex-shrink: 0;
+  }
+  .chat-name { font-size: .85rem; font-weight: 600; color: #fff; }
+  .chat-status { font-size: .7rem; color: #a7f3d0; }
+  .chat-messages {
+    background: #0d1117; padding: .8rem;
+    flex: 1; display: flex; flex-direction: column; gap: .5rem;
+    min-height: 180px;
+  }
+  .msg { display: flex; flex-direction: column; }
+  .msg-in { align-items: flex-start; }
+  .msg-out { align-items: flex-end; }
+  .msg-bubble {
+    max-width: 85%; padding: .55rem .9rem; border-radius: 12px;
+    font-size: .8rem; line-height: 1.45;
+  }
+  .msg-in .msg-bubble { background: #1e2730; color: var(--text); border-bottom-left-radius: 3px; }
+  .msg-out .msg-bubble { background: #005c4b; color: #fff; border-bottom-right-radius: 3px; }
+  .msg-time { font-size: .65rem; color: var(--muted); margin-top: .2rem; padding: 0 .2rem; }
+  .chat-input-bar {
+    display: flex; align-items: center; gap: .5rem;
+    background: #1e2730; padding: .6rem .8rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .chat-fake-input { flex: 1; font-size: .8rem; color: var(--muted); }
+  .chat-send { color: #25d366; font-size: 1rem; }
+
+  /* ── DASHBOARD UI ── */
+  .dashboard-ui { padding: 0; }
+  .dash-topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: .8rem 1rem; background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    font-size: .8rem; font-weight: 600;
+  }
+  .dash-new {
+    background: var(--accent); color: #fff;
+    padding: .2rem .7rem; border-radius: 6px; font-size: .72rem; cursor: pointer;
+  }
+  .dash-stats {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    border-bottom: 1px solid var(--border);
+  }
+  .dash-stat-box {
+    padding: .8rem .5rem; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .dash-stat-box:last-child { border-right: none; }
+  .dash-stat-num { font-size: 1.4rem; font-weight: 800; }
+  .dash-stat-label { font-size: .65rem; color: var(--muted); margin-top: .1rem; }
+  .dash-list { display: flex; flex-direction: column; }
+  .dash-row {
+    display: flex; align-items: center; gap: .8rem;
+    padding: .6rem 1rem; border-bottom: 1px solid var(--border); font-size: .8rem;
+  }
+  .dash-row:last-child { border-bottom: none; }
+  .dash-time { font-weight: 700; color: var(--accent2); min-width: 38px; font-size: .78rem; }
+  .dash-info { flex: 1; display: flex; flex-direction: column; gap: .1rem; }
+  .dash-info span { font-size: .7rem; color: var(--muted); }
+  .dash-badge { font-size: .65rem; font-weight: 600; padding: .2rem .55rem; border-radius: 999px; white-space: nowrap; }
+  .green-badge { background: rgba(34,197,94,.15); color: #22c55e; border: 1px solid rgba(34,197,94,.25); }
+  .yellow-badge { background: rgba(245,158,11,.15); color: #f59e0b; border: 1px solid rgba(245,158,11,.25); }
+  .red-badge { background: rgba(239,68,68,.15); color: #ef4444; border: 1px solid rgba(239,68,68,.25); }
+
+  /* ── REVIEW UI ── */
+  .review-ui { padding: 1rem; }
+  .review-score-row { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .review-big-score { font-size: 2.8rem; font-weight: 800; color: var(--accent2); line-height: 1; }
+  .review-stars { color: #f59e0b; font-size: 1rem; letter-spacing: .05em; }
+  .review-count { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+  .review-trend { font-size: .72rem; color: #22c55e; margin-top: .15rem; }
+  .review-list { display: flex; flex-direction: column; gap: .8rem; }
+  .review-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: .8rem; }
+  .review-item-top { display: flex; align-items: center; gap: .6rem; margin-bottom: .35rem; }
+  .review-user { font-size: .8rem; font-weight: 600; }
+  .review-stars-sm { color: #f59e0b; font-size: .8rem; }
+  .review-date { font-size: .7rem; color: var(--muted); margin-left: auto; }
+  .review-text { font-size: .78rem; color: var(--muted); margin-bottom: .6rem; font-style: italic; }
+  .review-response { background: rgba(124,92,252,0.06); border: 1px solid rgba(124,92,252,0.15); border-radius: 8px; padding: .6rem .8rem; }
+  .review-response-label { font-size: .7rem; color: var(--accent2); font-weight: 600; margin-bottom: .3rem; }
+  .review-response-text { font-size: .75rem; color: var(--muted); margin-bottom: .5rem; }
+  .review-actions { display: flex; gap: .5rem; }
+  .review-btn { border: none; padding: .25rem .7rem; border-radius: 6px; font-size: .7rem; font-weight: 600; cursor: pointer; }
+  .review-btn.approve { background: rgba(34,197,94,.2); color: #22c55e; }
+  .review-btn.edit { background: rgba(255,255,255,.08); color: var(--muted); }
+
+  /* ── LEADS UI ── */
+  .leads-ui { padding: 0; }
+  .leads-header-row {
+    display: flex; justify-content: space-between; padding: .8rem 1rem;
+    font-size: .8rem; font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+  }
+  .leads-month { color: var(--muted); font-weight: 400; font-size: .75rem; }
+  .pipeline-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
+  .pipeline-col { padding: .8rem; border-right: 1px solid var(--border); }
+  .pipeline-col:last-child { border-right: none; }
+  .pipeline-col-title {
+    font-size: .72rem; font-weight: 700; margin-bottom: .7rem;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: .3rem .5rem; border-radius: 6px;
+  }
+  .pipeline-col-title span { background: rgba(255,255,255,0.1); padding: .1rem .45rem; border-radius: 999px; }
+  .new-col { color: #7c5cfc; background: rgba(124,92,252,0.08); }
+  .contact-col { color: #f59e0b; background: rgba(245,158,11,0.08); }
+  .won-col { color: #22c55e; background: rgba(34,197,94,0.08); }
+  .pipeline-card {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    border-radius: 8px; padding: .55rem .65rem; margin-bottom: .5rem;
+  }
+  .won-card { background: rgba(34,197,94,0.05); border-color: rgba(34,197,94,.15); }
+  .pc-name { font-size: .78rem; font-weight: 600; }
+  .pc-detail { font-size: .7rem; color: var(--muted); margin: .1rem 0; }
+  .pc-source { font-size: .65rem; color: var(--muted); }
+  .pc-tag { font-size: .63rem; font-weight: 600; padding: .15rem .5rem; border-radius: 999px; display: inline-block; margin-top: .25rem; }
+  .sent { background: rgba(124,92,252,.15); color: var(--accent2); }
+  .waiting { background: rgba(245,158,11,.15); color: #f59e0b; }
+  .won-tag { background: rgba(34,197,94,.15); color: #22c55e; }
+
+  @media (max-width: 768px) {
+    .prodotti-grid { grid-template-columns: 1fr; }
+    .pipeline-cols { grid-template-columns: 1fr; }
+    .pipeline-col { border-right: none; border-bottom: 1px solid var(--border); }
+    .pipeline-col:last-child { border-bottom: none; }
+    .dash-stats { grid-template-columns: repeat(2,1fr); }
+  }
+</style>
+
+<!-- CTA -->
+<section id="contatti">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Pronto a scoprire cosa l'AI<br>può fare per la tua azienda?</h2>
+      <p>Prenota una call gratuita di 30 minuti. Nessun impegno, nessuna vendita aggressiva — solo una conversazione onesta su cosa è realmente possibile per te.</p>
+      <div class="cta-form">
+        <input type="email" class="cta-input" placeholder="La tua email" />
+        <a href="mailto:tua@email.com" class="btn-primary">Prenota la call →</a>
+      </div>
+      <p style="font-size:.8rem; color: var(--muted); margin-top:1.2rem;">
+        Oppure scrivici direttamente: <strong style="color:var(--accent2)">tua@email.com</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 AImpresa · Realizzato con AI, per le PMI italiane</p>
+</footer>
+
+<script>
+  // Smooth reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.sol-card, .step, .settore-card, .processo-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
